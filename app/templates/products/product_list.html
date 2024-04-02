@@ -1,0 +1,109 @@
+{% extends 'products/base.html' %}
+{% load static i18n %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block content %}
+  <script src="{% static 'js/project.js' %}"></script>
+  <script>
+    function updateProductDisplay(productId, productName) {
+      var productData = sessionStorage.getItem('product_' + productId);
+      if (!productData) {
+        // If product data is not found, set productCount to 0
+        var productCount = 0;
+      } else {
+        // Parse the JSON string to an object
+        var product = JSON.parse(productData);
+        // Extract the count property from the product object
+        var productCount = product.count;
+      }
+      var productDiv = document.getElementById('prod-' + productId);
+      if (productCount === 0) {
+        productDiv.innerHTML = `
+            <div onclick="addToCart(${productId}, '${productName.replace(/"/g, '\\"')}')">${productName}</div>
+        `;
+      } else {
+        productDiv.innerHTML = `
+            <button onclick="decreaseCount(${productId}, '${productName.replace(/"/g, '\\"')}')" type="button" class="count-buttons">-</button>
+            <span id="prod-${productId}">${productCount}</span>
+            <button onclick="increaseCount(${productId}, '${productName.replace(/"/g, '\\"')}')" type="button" class="count-buttons">+</button>
+        `;
+      }
+    }
+
+    function updateMainButton() {
+      var cartInfo = getCartItemCount();
+      var button = Telegram.WebApp.MainButton;
+      if (cartInfo.itemCount > 0) {
+        // If there are items in the cart, show the main button with appropriate text
+        button.setParams({
+          text: '{% trans "Savat: " %}' + cartInfo.totalPrice.toFixed(0),
+          is_visible: true
+        }).onClick(function () {
+          // Your logic to handle clicking the main button when there are items in the cart
+          // For example, redirecting to the cart page
+          window.location.href = '/tg/cart' + '?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}';
+        });
+      } else {
+        // If there are no items in the cart, hide the main button
+        button.setParams({
+          is_visible: false
+        });
+      }
+    }
+
+    function getProductData(productId) {
+      const apiUrl = '/tg/product/' + productId.toString() +
+        '?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}';
+      // Return the fetch Promise
+      return fetch(apiUrl)
+        .then(response => {
+          // Check if the request was successful (status code 200)
+          if (!response.ok) {
+            alert("Server Error");
+            throw new Error('Network response was not ok');
+          }
+          // Parse the JSON response and return the price value
+          return response.json();
+        });
+    }
+
+    updateMainButton();
+
+  </script>
+  <div class="header">
+    <div class="left-column"><div class="back" onclick="goBack()"></div></div>
+    <div class="center-column"><h2>{{ category.name }}</h2></div>
+  </div>
+  <ul class="category-list">
+    {% for product in products %}
+      <li data-product-id="{{ product.id }}" data-product-name="{{ product.name }}">
+        <div class="overlay-price"><div class="price">{{ product.price }} {% trans "so'm" %}</div></div>
+        {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" width="168px" height="168px"
+               onclick="addToCart({{ product.id }},'{{ product.name }}')">
+        {% else %}
+          <img src="{% static 'images/not_found.jpeg' %}" alt="Image Not Found" width="168px" height="168px"
+               onclick="addToCart({{ product.id }},'{{ product.name }}')">
+        {% endif %}
+
+        <div class="overlay-button" id="prod-{{ product.id }}"></div>
+      </li>
+    {% endfor %}
+  </ul>
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Loop through each product and update its display
+      var products = document.querySelectorAll('.category-list li');
+      products.forEach(function (product) {
+        var productId = product.getAttribute('data-product-id');
+        var productName = product.getAttribute('data-product-name');
+        updateProductDisplay(productId, productName);
+      });
+    });
+
+  </script>
+{% endblock %}
+

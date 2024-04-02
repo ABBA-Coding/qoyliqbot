@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Anjan Bot{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+<script src="{% static 'js/project.js' %}" type="text/javascript"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  function setThemeClass() {
+
+    const body = document.body;
+    const isDarkMode = Telegram.WebApp.colorScheme === 'dark';
+    body.classList.toggle('dark-mode', isDarkMode);
+  }
+
+  Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+  setThemeClass();
+
+  var l = window.Telegram.WebApp.SettingsButton
+  l.isVisible = true;
+  Telegram.WebApp.onEvent('settingsButtonClicked', function () {
+    toggleDarkMode();
+  });
+
+  function toggleDarkMode() {
+    const body = document.body;
+    // Toggle dark mode class on the body
+    body.classList.toggle('dark-mode');
+  }
+
+</script>
+<main>
+  {% block content %}{% endblock %}
+</main>
+<footer>
+  <!-- Add footer content here if needed -->
+</footer>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

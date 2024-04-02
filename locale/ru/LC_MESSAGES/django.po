@@ -1,0 +1,555 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-18 07:41+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: app/products/models.py:55
+msgid "Yaratildi"
+msgstr ""
+
+#: app/products/models.py:56
+msgid "Ko'rib chiqildi"
+msgstr ""
+
+#: app/products/models.py:57
+msgid "To'landi"
+msgstr ""
+
+#: app/products/models.py:60
+msgid "Click"
+msgstr ""
+
+#: app/products/models.py:61
+msgid "Payme"
+msgstr ""
+
+#: app/products/signals.py:21
+msgid "Savatchangizdagi to'lov miqdori"
+msgstr ""
+
+#: app/templates/account/account_inactive.html:6
+#: app/templates/account/account_inactive.html:9
+msgid "Account Inactive"
+msgstr ""
+
+#: app/templates/account/account_inactive.html:10
+msgid "This account is inactive."
+msgstr ""
+
+#: app/templates/account/email.html:8
+msgid "Account"
+msgstr ""
+
+#: app/templates/account/email.html:11
+msgid "E-mail Addresses"
+msgstr ""
+
+#: app/templates/account/email.html:13
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: app/templates/account/email.html:28
+msgid "Verified"
+msgstr ""
+
+#: app/templates/account/email.html:30
+msgid "Unverified"
+msgstr ""
+
+#: app/templates/account/email.html:33
+msgid "Primary"
+msgstr ""
+
+#: app/templates/account/email.html:41
+msgid "Make Primary"
+msgstr ""
+
+#: app/templates/account/email.html:44
+msgid "Re-send Verification"
+msgstr ""
+
+#: app/templates/account/email.html:47
+msgid "Remove"
+msgstr ""
+
+#: app/templates/account/email.html:53
+msgid "Warning:"
+msgstr ""
+
+#: app/templates/account/email.html:53
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: app/templates/account/email.html:56
+msgid "Add E-mail Address"
+msgstr ""
+
+#: app/templates/account/email.html:60
+msgid "Add E-mail"
+msgstr ""
+
+#: app/templates/account/email.html:67
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: app/templates/account/email_confirm.html:7
+#: app/templates/account/email_confirm.html:10
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: app/templates/account/email_confirm.html:14
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: app/templates/account/email_confirm.html:19
+msgid "Confirm"
+msgstr ""
+
+#: app/templates/account/email_confirm.html:24
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a "
+"href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+
+#: app/templates/account/login.html:8 app/templates/account/login.html:11
+#: app/templates/account/login.html:50
+msgid "Sign In"
+msgstr ""
+
+#: app/templates/account/login.html:15
+msgid "Please sign in with one of your existing third party accounts:"
+msgstr ""
+
+#: app/templates/account/login.html:17
+#, python-format
+msgid ""
+"Or, <a href=\"%(signup_url)s\">sign up</a> for a %(site_name)s account and "
+"sign in below:"
+msgstr ""
+
+#: app/templates/account/login.html:27
+msgid "or"
+msgstr ""
+
+#: app/templates/account/login.html:33
+#, python-format
+msgid ""
+"If you have not created an account yet, then please <a "
+"href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: app/templates/account/login.html:49
+msgid "Forgot Password?"
+msgstr ""
+
+#: app/templates/account/logout.html:6 app/templates/account/logout.html:9
+#: app/templates/account/logout.html:18
+msgid "Sign Out"
+msgstr ""
+
+#: app/templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: app/templates/account/password_change.html:7
+#: app/templates/account/password_change.html:10
+#: app/templates/account/password_change.html:16
+#: app/templates/account/password_reset_from_key.html:7
+#: app/templates/account/password_reset_from_key.html:14
+#: app/templates/account/password_reset_from_key_done.html:6
+#: app/templates/account/password_reset_from_key_done.html:9
+msgid "Change Password"
+msgstr ""
+
+#: app/templates/account/password_reset.html:8
+#: app/templates/account/password_reset.html:11
+#: app/templates/account/password_reset_done.html:7
+#: app/templates/account/password_reset_done.html:10
+msgid "Password Reset"
+msgstr ""
+
+#: app/templates/account/password_reset.html:16
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: app/templates/account/password_reset.html:25
+msgid "Reset My Password"
+msgstr ""
+
+#: app/templates/account/password_reset.html:27
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: app/templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: app/templates/account/password_reset_from_key.html:12
+msgid "Bad Token"
+msgstr ""
+
+#: app/templates/account/password_reset_from_key.html:20
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: app/templates/account/password_reset_from_key.html:30
+msgid "change password"
+msgstr ""
+
+#: app/templates/account/password_reset_from_key.html:33
+#: app/templates/account/password_reset_from_key_done.html:10
+msgid "Your password is now changed."
+msgstr ""
+
+#: app/templates/account/password_set.html:7
+#: app/templates/account/password_set.html:10
+#: app/templates/account/password_set.html:19
+msgid "Set Password"
+msgstr ""
+
+#: app/templates/account/signup.html:7
+msgid "Signup"
+msgstr ""
+
+#: app/templates/account/signup.html:10 app/templates/account/signup.html:25
+msgid "Sign Up"
+msgstr ""
+
+#: app/templates/account/signup.html:12
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: app/templates/account/signup_closed.html:6
+#: app/templates/account/signup_closed.html:9
+msgid "Sign Up Closed"
+msgstr ""
+
+#: app/templates/account/signup_closed.html:10
+msgid "We are sorry, but the sign up is currently closed."
+msgstr ""
+
+#: app/templates/account/verification_sent.html:6
+#: app/templates/account/verification_sent.html:9
+#: app/templates/account/verified_email_required.html:6
+#: app/templates/account/verified_email_required.html:9
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: app/templates/account/verification_sent.html:11
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: app/templates/account/verified_email_required.html:12
+msgid ""
+"This part of the site requires us to verify that\n"
+"you are who you claim to be. For this purpose, we require that you\n"
+"verify ownership of your e-mail address. "
+msgstr ""
+
+#: app/templates/account/verified_email_required.html:17
+msgid ""
+"We have sent an e-mail to you for\n"
+"verification. Please click on the link inside this e-mail. Please\n"
+"contact us if you do not receive it within a few minutes."
+msgstr ""
+
+#: app/templates/account/verified_email_required.html:22
+#, python-format
+msgid ""
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
+msgstr ""
+
+#: app/templates/admin/index.html:24
+msgid "Recent actions"
+msgstr ""
+
+#: app/templates/admin/index.html:25
+msgid "My actions"
+msgstr ""
+
+#: app/templates/admin/index.html:29
+msgid "None available"
+msgstr ""
+
+#: app/templates/admin/index.html:35
+msgid "Added:"
+msgstr ""
+
+#: app/templates/admin/index.html:36
+msgid "Changed:"
+msgstr ""
+
+#: app/templates/admin/index.html:36
+msgid "Deleted:"
+msgstr ""
+
+#: app/templates/admin/index.html:46
+msgid "Unknown content"
+msgstr ""
+
+#: app/templates/products/cart.html:10
+msgid "Savat"
+msgstr "Корзина"
+
+#: app/templates/products/cart.html:12
+msgid "O'chirish"
+msgstr "Стереть"
+
+#: app/templates/products/cart.html:35
+msgid "Davom etish"
+msgstr "Продолжить"
+
+#: app/templates/products/cart.html:54
+msgid "Nomi: "
+msgstr "Название: "
+
+#: app/templates/products/cart.html:55
+msgid "Narxi: "
+msgstr "Цена: "
+
+#: app/templates/products/cart.html:55
+msgid "so'm"
+msgstr "сум"
+
+#: app/templates/products/cart.html:56
+msgid "Soni: "
+msgstr "Количество: "
+
+#: app/templates/products/category_list.html:8
+msgid "Menyu"
+msgstr "Меню"
+
+#: app/templates/products/order.html:7
+msgid "Ma'lumot"
+msgstr "Информация"
+
+#: app/templates/products/order.html:25
+msgid "Xa"
+msgstr "Да"
+
+#: app/templates/products/order.html:26
+msgid "Yo'q"
+msgstr "Нет"
+
+#: app/templates/products/order.html:115
+msgid "Buyurtma berish"
+msgstr "Заказать"
+
+#: app/templates/products/order.html:152
+msgid "Manzilni tanlang"
+msgstr "Выберите адрес"
+
+#: app/templates/products/order.html:191
+msgid "Xato: 100km atrofida filial mavjud emas."
+msgstr "Ошибка: не найден филиал ближе чем 100км"
+
+#: app/templates/products/product_list.html:38
+msgid "Savat: "
+msgstr "Корзина"
+
+#: app/users/admin.py:28
+msgid "Personal info"
+msgstr ""
+
+#: app/users/admin.py:30
+msgid "Permissions"
+msgstr ""
+
+#: app/users/admin.py:41
+msgid "Important dates"
+msgstr ""
+
+#: app/users/apps.py:7
+msgid "Пользователи"
+msgstr ""
+
+#: app/users/forms.py:24 app/users/tests/test_forms.py:35
+msgid "This username has already been taken."
+msgstr ""
+
+#: app/users/models.py:19
+msgid "Name of User"
+msgstr ""
+
+#: app/users/models.py:34
+msgid "Телеграм ID"
+msgstr ""
+
+#: app/users/models.py:40
+msgid "Язык пользователя"
+msgstr ""
+
+#: app/users/models.py:41
+msgid "Имя пользователя"
+msgstr ""
+
+#: app/users/models.py:42
+msgid "Телефонный номер"
+msgstr ""
+
+#: app/users/models.py:52
+msgid "Телеграм пользователь"
+msgstr ""
+
+#: app/users/models.py:53
+msgid "Телеграм пользователи"
+msgstr ""
+
+#: app/users/tasks.py:63
+msgid ""
+"Ro'yxatdan o'tishni davom ettiring. \n"
+"Bu bir daqiqa vaqtingizni oladi."
+msgstr ""
+"Продолжите регистрацию. \n"
+"Это займет всего лишь минуту"
+
+#: app/users/tasks.py:69
+msgid ""
+"Siz ismingizni ko'rsatishni unutdingiz! \n"
+"Iltimos, davom ettirish uchun ismingizni yozing"
+msgstr ""
+"Вы забыли указать своё имя! \n"
+"Пожалуйста, для продолжения укажите своё имя"
+
+#: app/users/tasks.py:75
+msgid ""
+"Bor yo'g'i bir qadam qoldi! \n"
+"Telefon raqamni to'ldiring va haridlarni davom ettiravering!"
+msgstr ""
+"Осталось всего лишь один шаг! \n"
+"Укажите свой телефонный номер и продолжите покупки!"
+
+#: app/users/tests/test_views.py:71
+msgid "Information successfully updated"
+msgstr ""
+
+#: bot/routers/echo.py:16 bot/routers/register.py:27
+msgid "Bo'limni tanlang"
+msgstr "Выберите раздел"
+
+#: bot/routers/echo.py:25
+msgid "Buyurtma berish uchun quyidagi tugmani bosing"
+msgstr "Для заказа нажмите кнопку ниже"
+
+#: bot/routers/echo.py:40
+msgid ""
+"🏡 Filiallar\n"
+"\n"
+msgstr ""
+"🏡 Филиалы\n"
+"\n"
+
+#: bot/routers/echo.py:48
+msgid ""
+"🏡 Manzillarim\n"
+"\n"
+msgstr ""
+"🏡 Мои адреса\n"
+"\n"
+
+#: bot/routers/payment.py:35
+msgid "Savat allaqachon to'langan"
+msgstr "Заказ уже оплачен"
+
+#: bot/routers/payment.py:37
+msgid "Savat topilmadi"
+msgstr "Заказ не найден"
+
+#: bot/routers/register.py:38
+msgid "Iltimos, ism sharifingizni yozing"
+msgstr "Пожалуйста, отправьте своё имя и фамилия"
+
+#: bot/routers/register.py:41
+msgid "Noto'g'ri buyruq"
+msgstr "Неверная команда"
+
+#: bot/routers/register.py:49
+msgid "Raqamni yuborish"
+msgstr "Отправить телефон"
+
+#: bot/routers/register.py:50
+msgid "O'zingizni telefon raqamingizni yuboring"
+msgstr "Отправьте свой телефон номер"
+
+#: bot/routers/register.py:57
+msgid ""
+"Telefon raqam noto'g'ri ko'rsatildi\n"
+"Iltimos, telefon raqamni ko'rsatilgan formatda yozing: +998 хх ххх хх хх"
+msgstr ""
+"Неверный телефонный номер\n"
+"Пожалуйста, отправьте телефон номер в формате: +998 хх ххх хх хх"
+
+#: bot/routers/register.py:80
+msgid "Lokasiyangizni yuboring"
+msgstr "Отправьте локацию"
+
+#: bot/routers/register.py:93
+msgid "Ro'yxatdan o'tdingiz"
+msgstr "Вы успешно зарегистрировались"
+
+#: bot/routers/register.py:96
+msgid "Iltimos pastdagi tugmadan bizga o'z lokasiyangizni yuboring"
+msgstr "Пожалуйста, отправьте локацию, нажав на кнопку ниже"
+
+#: bot/utils/kbs.py:6
+msgid "🇺🇿 O'zbek tili"
+msgstr ""
+
+#: bot/utils/kbs.py:7
+msgid "🇷🇺 Русский язык"
+msgstr ""
+
+#: bot/utils/kbs.py:13
+msgid "Lokasiya yuborish"
+msgstr "Отправить локацию"
+
+#: bot/utils/kbs.py:18
+#, fuzzy
+#| msgid "Raqamni yuborish"
+msgid "Raqam yuborish"
+msgstr "Отправить телефон"
+
+#: config/settings/base.py:32
+msgid "O'zbek"
+msgstr ""
+
+#: config/settings/base.py:33
+msgid "Русский"
+msgstr ""

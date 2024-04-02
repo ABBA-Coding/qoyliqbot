@@ -1,0 +1,37 @@
+{% extends 'products/base.html' %}
+{% load static i18n %}
+{% block title %}Category List{% endblock %}
+{% block content %}
+
+  <div class="header">
+    <div class="center-column">
+      <h2>{% trans "Menyu" %}</h2>
+    </div>
+  </div>
+  <ul class="category-list">
+    {% for category in categories %}
+      <li onclick="redirectTo('{{ category.id }}')">
+        {% if category.image %}
+          <img src="{{ category.image.url }}" alt="{{ category.name }}" width="168px" height="168px">
+        {% else %}
+          <img src="{% static 'images/not_found.jpeg' %}" alt="Image Not Found" width="168px" height="168px">
+        {% endif %}
+        <div class="overlay-button"><div>{{ category.name }}</div></div>
+      </li>
+    {% endfor %}
+  </ul>
+  <script>
+    function redirectTo(categoryId) {
+      var queryParams = window.location.search.substr(1);
+      var url = '/tg/category/' + categoryId + '/'; // Replace 0 with the appropriate URL pattern name
+      if (queryParams) {
+        url += '?' + queryParams + '&';
+      } else {
+        url += '?';
+      }
+      // url += 'categoryId=' + categoryId; // Append category id or any other parameter you want
+      window.location.href = url;
+    }
+
+  </script>
+{% endblock %}

@@ -1,0 +1,424 @@
+{% extends 'products/base.html' %}
+{% load static i18n %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block content %}
+  <script src="{% static 'js/order.js' %}"></script>
+  <script src="{% static 'js/project.js' %}"></script>
+  <div class="header">
+    <div class="left-column">
+      <div class="back" onclick="goBack()"></div>
+    </div>
+    <div class="center-column"><h2>{% trans "Buyurtma" %}</h2></div>
+  </div>
+  <div style="padding: 10px">
+    <div class="form-group">
+      {#      <button type="button" class="cash-button active" value="payme">Payme</button>#}
+      <button type="button" class="cash-button active" value="click">Click</button>
+      <input type="hidden" id="cashType" name="cashType" value="click">
+      <!-- Hidden input to store the selected value -->
+    </div>
+
+    <div class="form-group">
+      <button type="button" class="delivery-button active" value="yes">{% trans "Yetkazib berish" %}</button>
+      <button type="button" class="delivery-button" value="no">{% trans "Borib olish" %}</button>
+      <input type="hidden" id="deliveryOption" name="deliveryOption" value="yes">
+      <!-- Hidden input to store the selected value -->
+    </div>
+
+    <div class="form-group">
+      <label for="address" hidden></label>
+      <select id="address" name="address">
+      </select>
+      <button onclick="getLocation()">{% trans 'Hozirgi manzil' %}</button>
+      <input type="hidden" id="selectedAddress" name="selectedAddress" value="">
+    </div>
+
+
+    <div class="form-group">
+      <div class="form-left">Filial:</div>
+      <div id="branch" class="form-right"></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-left">Masofa:</div>
+      <div id="minDistance" class="form-right">Noma'lum</div>
+    </div>
+
+
+    <div class="all-cost">
+      <div class="cost">
+        <div class="left">{% trans 'Yetkazib berish:' %}</div>
+        <div class="right"> {% trans 'Yetkazib boʻlgach' %}</div>
+        <div class="right" id="deliveryCost"></div>
+      </div>
+
+      {#      <div class="cost">#}
+      {#        <div class="left">{% trans 'Narxi:' %}</div>#}
+      {#        <div class="right"> {% trans 'soʻm' %}</div>#}
+      {#        <div class="right" id="cost">0</div>#}
+      {#      </div>#}
+      <div class="divider"></div>
+
+      <div class="cost">
+        <div class="left">{% trans 'Jami:' %}</div>
+        <div class="right" style="font-size: 20px"> {% trans 'soʻm' %}</div>
+        <div class="right" id="totalAmount" style="font-size: 20px">0</div>
+      </div>
+{#      <button onclick="createOrder()">Kettik</button>#}
+    </div>
+  </div>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var cashButtons = document.querySelectorAll(".cash-button");
+      var deliveryButtons = document.querySelectorAll(".delivery-button");
+
+      cashButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          // Remove active class from all buttons
+          cashButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+          });
+
+          // Add active class to the clicked button
+          this.classList.add("active");
+
+          var selectedValue = this.value;
+          var cashTypeInput = document.getElementById("cashType");
+          cashTypeInput.value = selectedValue;
+        });
+      });
+      deliveryButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          // Remove active class from all buttons
+          deliveryButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+          });
+
+          // Add active class to the clicked button
+          this.classList.add("active");
+
+          var selectedValue = this.value;
+          var deliveryTypeInput = document.getElementById("deliveryOption");
+
+          // const deliveryCost = deliveryTypeInput.innerHTML === '' ? 0 : deliveryTypeInput.innerHTML
+          // document.getElementById('deliveryCost').innerHTML = selectedValue === 'no' ? 0 : deliveryCost
+          // deliveryTypeInput.value = selectedValue;
+          const addressSelect = document.getElementById('selectedAddress');
+          const selectedAddress = addresses.find(address => address.id === parseInt(addressSelect.value));
+          if (selectedAddress) {
+            const addressLatitude = selectedAddress.latitude;
+            const addressLongitude = selectedAddress.longitude;
+            let minDistance = Infinity;
+            let closestOutlet = null;
+            outletBranches.forEach(branch => {
+
+              const distance = calculateDistance(addressLatitude, addressLongitude, branch.latitude, branch.longitude);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestOutlet = branch;
+              }
+            });
+            validateMinDistance(minDistance, closestOutlet);
+            // Update minimum distance label
+            document.getElementById('minDistance').innerText = minDistance.toFixed(2) + " km";
+          } else {
+            document.getElementById('minDistance').innerText = "0 km";
+            document.getElementById('branch').innerText = "";
+          }
+
+        });
+      });
+    });
+
+
+    var user = Telegram.WebApp.initDataUnsafe.user;
+    // var user = {"id": 6201336345};
+    var button = Telegram.WebApp.MainButton;
+
+    let outletBranches = [];
+
+    function createOrder() {
+      const formData = {
+        cash_type: document.getElementById('cashType').value,
+        delivery: document.getElementById('deliveryOption').value,
+        address: document.getElementById('selectedAddress').innerText,
+        filial: parseInt(document.getElementById('branch').getAttribute('data')),
+        distance: document.getElementById('minDistance').value,
+        // cost: document.getElementById('cost').innerHTML,
+        // delivery_cost: document.getElementById('deliveryCost').innerHTML,
+        all_cost: document.getElementById('totalAmount').innerHTML,
+        user: parseInt(user.id),
+      };
+      const selectedProducts = [];
+      for (var i = 0; i < sessionStorage.length; i++) {
+        var key = sessionStorage.key(i);
+        if (key.startsWith('product_')) {
+          var product = JSON.parse(sessionStorage.getItem(key));
+          selectedProducts.push({name: product.name, count: product.count});
+        }
+      }
+      formData.selected_products = selectedProducts;
+      fetch('/create-order/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify(formData)
+
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            // Order created successfully, handle response as needed
+            Telegram.WebApp.close()
+          } else {
+            console.error('Failed to create order');
+          }
+        })
+        .catch(error => {
+          console.error('Error creating order:', error);
+        });
+
+
+    }
+
+    function showButton() {
+      button.setParams({
+        text: '{% trans "Buyurtma berish" %}',
+        is_visible: true
+      }).onClick(function () {
+        //
+        createOrder();
+      });
+    }
+
+    function disableButton() {
+      button.setParams({
+        is_visible: false
+      });
+    }
+
+    getOutletBranchesData()
+      .then(data => {
+        outletBranches = data.data;
+      })
+      .catch(error => {
+        console.error('Error fetching outlet branches data:', error);
+      });
+
+    let addresses = [];
+    getAddressessData(user.id.toString()).then(data => {
+      addresses = data.addresses;
+      let minDistance = Infinity;
+      let closestOutlet = null;
+
+      if (minDistance > 100) {
+        document.getElementById('branch').innerText = '{% trans "Nomaʻlum" %}';
+
+      } else {
+        document.getElementById('branch').innerText = closestOutlet.name;
+      }
+      const addressSelect = document.getElementById('address');
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = '{% trans "Manzilni tanlang" %}'; // Prompt text
+      addressSelect.appendChild(defaultOption);
+
+
+      addresses.forEach(address => {
+        const option = document.createElement('option');
+        option.value = address.id;
+        option.textContent = address.name;
+        addressSelect.appendChild(option);
+      });
+      // Event listener for address selection
+      addressSelect.addEventListener('change', function () {
+        if (this.value === '') {
+          // Clear selected address and exit function
+          document.getElementById('selectedAddress').innerText = '';
+          return;
+        }
+
+        const selectedAddress = addresses.find(address => address.id === parseInt(this.value));
+        document.getElementById('selectedAddress').innerText = selectedAddress ? selectedAddress.name : '';
+        document.getElementById('selectedAddress').value = selectedAddress ? selectedAddress.id : '';
+
+        // Calculate and update minimum distance if an address is selected
+        if (selectedAddress) {
+          const addressLatitude = selectedAddress.latitude;
+          const addressLongitude = selectedAddress.longitude;
+          let minDistance = Infinity;
+          let closestOutlet = null;
+
+          outletBranches.forEach(branch => {
+
+            const distance = calculateDistance(addressLatitude, addressLongitude, branch.latitude, branch.longitude);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestOutlet = branch;
+            }
+          });
+
+          // Validate minimum distance
+          validateMinDistance(minDistance, closestOutlet);
+
+
+          // Update minimum distance label
+          document.getElementById('minDistance').innerText = minDistance.toFixed(2) + " km";
+        } else {
+          document.getElementById('minDistance').innerText = "0 km";
+          document.getElementById('branch').innerText = "";
+        }
+      });
+
+
+      // document.getElementById('deliveryOption').addEventListener('change', function () {
+      //   const selectedOption = this.value;
+      //   const minDistance = parseFloat(document.getElementById('minDistance').innerText);
+      //   const selectedAddress = document.getElementById('selectedAddress').innerText;
+
+      //   if (selectedOption === 'no' || minDistance < 100 || selectedAddress !== '') {
+      //     console.log('Delivery option is "no" and minimum distance is less than 100');
+      //     // Add your logic here for when delivery option is "no" and minDistance is less than 100
+      //     showButton();
+      //   }
+      //   else {
+      //     disableButton();
+      //   }
+      // });
+
+      // Calculate and update total amount
+
+
+    }).catch(error => {
+      console.error('Error fetching address branches data:', error);
+    });
+
+    function validateMinDistance(minDistance, closestOutlet) {
+      if (minDistance > 100) {
+        document.getElementById('branch').innerText = '{% trans "Xato: 100km atrofida filial mavjud emas." %}';
+        disableButton();
+      } else {
+        const branchElement = document.getElementById('branch');
+        branchElement.setAttribute('data', closestOutlet.id);
+        document.getElementById('branch').innerText = closestOutlet.name;
+        showButton();
+        // Calculate and update cost
+        const cost = getCartItemCount().totalPrice;
+
+        // Calculate and update delivery cost based on delivery option
+        // const deliveryOption = document.getElementById('deliveryOption').value;
+        // let calculatedCost;
+
+        // if (isFinite(minDistance)) {
+        //  calculatedCost = 2000 * Math.ceil(minDistance);
+        // } else {
+        //   // Handle the case where minDistance is Infinity or NaN
+        //   calculatedCost = 0; // Or any other appropriate value
+        // }
+        // const deliveryCost = deliveryOption === 'yes' ? calculatedCost : 0; // Example delivery cost
+
+        // document.getElementById('deliveryCost').innerHTML = deliveryCost;
+        // const totalAmount = cost + deliveryCost;
+        document.getElementById('totalAmount').innerHTML = cost.toLocaleString('en-US').replace(/,/g, ' ');
+      }
+    }
+
+    // Back
+    function goBack() {
+      window.history.back();
+    }
+
+    // Location get
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function showPosition(position) {
+      // Retrieve latitude and longitude
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      // Update the hidden input field with the selected geolocation
+
+      // Fetch use
+
+      // Create formData object including userId, latitude, and longitude
+      const formData = {
+        user_id: user.id,
+        latitude: latitude,
+        longitude: longitude
+      };
+
+      // Send POST request to server
+      fetch('/branches/get-address/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => {
+          if (response.ok) {
+            // Handle successful response from the server
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch address from server');
+          }
+        })
+        .then(data => {
+          // Handle the response data from the server
+          // Update select options with the location name
+          const addressSelect = document.getElementById('address');
+          const option = document.createElement('option');
+          option.value = data.id; // Assuming the address data contains the location name
+          option.textContent = data.name;
+          addressSelect.appendChild(option);
+          option.selected = true;
+          const event = new Event('change');
+          addressSelect.dispatchEvent(event);
+        })
+        .catch(error => {
+          // Handle any errors that occur during the request or response
+          console.error('Error:', error);
+        });
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred.");
+          break;
+      }
+    }
+
+    function getCookie(name) {
+      const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith(name + '='));
+
+      if (cookieValue) {
+        return cookieValue.split('=')[1];
+      } else {
+        return null;
+      }
+    }
+  </script>
+
+{% endblock %}

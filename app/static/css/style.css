@@ -1,0 +1,370 @@
+:root {
+  --light-background-color: #ffffff; /* Default light mode background color */
+  --light-text-color: #000000; /* Default light mode text color */
+  --light-second-color: #F6F6F6; /* Default light mode text color */
+  --dark-background-color: #1f1f1f; /* Dark mode background color */
+  --dark-second-color: #282828E5; /* Dark mode background color */
+  --dark-text-color: #ffffff; /* Dark mode text color */
+  --background-color: var(--light-background-color); /* Default to light mode background color */
+  --text-color: var(--light-text-color); /* Default to light mode text color */
+  --second-color: var(--light-second-color); /* Default to light mode text color */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  --light-down: url('black.svg');
+  --dark-down: url('white.svg');
+  --down: var(--light-down);
+  var(--tg-theme-button-color);
+  --tg-theme-button-color: #00CCFF;
+}
+
+
+/* Define styles for dark mode */
+.dark-mode {
+  --background-color: var(--dark-background-color);
+  --text-color: var(--dark-text-color);
+  --second-color: var(--dark-second-color);
+  --down: var(--dark-down);
+  --tg-theme-button-color: var(--dark-second-color);
+}
+
+a {
+  color: var(--text-color);
+}
+
+ul.category-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+ul.category-list li {
+  width: 50%; /* Two columns */
+  box-sizing: border-box; /* Include padding and border in width calculation */
+  padding: 10px; /* Adjust padding as needed */
+}
+
+
+ul.category-list li {
+  display: inline-block;
+  width: 50%; /* Two categories per row */
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+}
+
+ul.category-list li a {
+  text-decoration: none;
+}
+
+ul.category-list li img {
+  display: inline-block;
+  margin: 0 auto;
+  border-radius: 7px;
+  position: relative;
+}
+
+ul.category-list li .overlay-button {
+  display: inline-block;
+  position: relative;
+  top: -50px;
+  z-index: 1; /* Убедитесь, что кнопка находится выше изображения */
+  background: var(--second-color);
+  width: 168px;
+  height: 47px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  text-align: center;
+}
+
+
+ul.category-list li .overlay-button div {
+  margin: 10px;
+  max-width: 100%; /* Ensure text wraps within the container */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+ul.category-list li .overlay-price {
+  display: inline-block;
+  position: relative;
+  top: 36px;
+  left: -33px;
+  z-index: 1; /* Убедитесь, что кнопка находится выше изображения */
+  background: var(--second-color);
+  width: 100px;
+  height: 24px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  font-size: medium;
+}
+
+
+.price {
+  margin: 5px;
+  max-width: 100%; /* Ensure text wraps within the container */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+}
+
+
+button {
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  padding: 15px 34px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.center-column {
+  flex: 9;
+  text-align: center;
+  background-color: var(--second-color);
+  border-radius: 7px;
+  margin: 10px;
+
+}
+
+.left-column img {
+  height: 100%;
+}
+
+h2 {
+  flex: 1;
+  text-align: center;
+  color: var(--text-color);
+  border-radius: 7px;
+  background-color: transparent;
+}
+
+
+.left-column {
+  text-align: center;
+  height: 65px;
+  flex: 1;
+  border-radius: 7px;
+  background-color: var(--second-color);
+  align-items: center;
+  display: flex;
+}
+
+.back {
+  /* Vector */
+  width: 100%; /* Set the width of the background */
+  height: 100%;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: rotate(90deg);
+  background-image: var(--down);
+}
+
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
+.product-details {
+  flex-grow: 1;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.product-price {
+  font-size: 16px;
+}
+
+.product-count {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+  background-color: var(--second-color);
+  height: 50px;
+  bottom: 10px; /* Adjust this value to set the distance from the bottom */
+  left: 20px;
+  right: 30px;
+  padding: 2px; /* Optional: Add padding */
+  text-align: center; /* Optional: Center align text */
+  font-size: 14px;
+  align-items: center;
+}
+
+
+.form-group .form-left {
+  text-align: center;
+  padding: 10px;
+}
+
+.form-group .form-right {
+  padding: 10px;
+  text-align: center;
+}
+
+.cash-button {
+  border: none;
+  padding: 10px 0; /* Adjust padding as needed */
+  width: 100%;
+  background-color: var(--second-color);
+  cursor: pointer;
+  border-radius: 7px;
+  display: inline-block; /* Change display to block */
+}
+
+.cash-button.active {
+  background-color: #3692FF;
+  color: #fff;
+}
+
+.delivery-button {
+  border: none;
+  padding: 10px 0; /* Adjust padding as needed */
+  width: 50%;
+  background-color: var(--second-color);
+  cursor: pointer;
+  border-radius: 7px;
+  display: inline-block; /* Change display to block */
+}
+
+.delivery-button.active {
+  background-color: #3692FF;
+  color: #fff;
+}
+
+
+/* Adjust label styles */
+label {
+  display: block;
+  font-weight: bold;
+}
+
+/* Adjust textarea styles */
+textarea {
+  width: 100%;
+  height: 100px; /* Adjust height as needed */
+  padding: 5px;
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Adjust select styles */
+select {
+  width: 100%;
+  padding: 5px;
+  height: 50px;
+  background-color: var(--second-color);
+  border: none;
+  appearance: none;
+  -webkit-appearance: none; /* For older versions of WebKit browsers */
+  -moz-appearance: none;
+  background-image: var(--down); /* Replace with your arrow image */
+  background-repeat: no-repeat;
+  background-position: calc(100% - 15px) center;
+  border-radius: 7px;
+  color: var(--text-color);
+}
+
+/* Adjust input styles */
+input[type="number"] {
+  width: calc(100% - 10px); /* Adjust for padding */
+  padding: 5px;
+}
+
+/* Adjust span styles */
+span {
+  display: inline-block;
+  margin-top: 5px; /* Add space between elements */
+}
+
+/* Create a two-column layout */
+
+
+/* Clearfix to prevent columns from overlapping */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.all-cost {
+  position: fixed;
+  bottom: 10px; /* Adjust this value to set the distance from the bottom */
+  left: 20px;
+  right: 30px;
+  padding: 10px; /* Optional: Add padding */
+  text-align: center; /* Optional: Center align text */
+  font-size: 14px;
+  display: inline-grid;
+  background-color: var(--second-color);
+}
+
+.all-cost .left {
+  float: left;
+  text-align: left;
+}
+
+.all-cost .right {
+  float: right;
+  text-align: right;
+}
+
+.cost {
+  padding: 5px;
+}
+
+button.cart-button {
+  padding: 15px;
+}
+
+.divider {
+  height: 1px; /* Adjust height as needed */
+  background-color: var(--text-color); /* Adjust color as needed */
+  margin: 10px 0; /* Adjust margin as needed */
+}

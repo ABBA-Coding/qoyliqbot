@@ -1,0 +1,155 @@
+{% extends 'products/base.html' %}
+{% load static i18n %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block content %}
+  <div class="header">
+     <div class="left-column"><div class="back" onclick="goBack()"></div></div>
+    <div class="center-column">
+      <h2>{% trans 'Savat' %}</h2>
+    </div>
+    <div class="right-column" onclick="cleanSession()">{% trans "O'chirish" %}</div>
+  </div>
+  <div class="cart-container" id="product-list">
+
+  </div>
+  <div class="all-cost">
+    <div class="left">{% trans "Jami:" %}</div>
+    <div class="right" id="total-cost">0</div>
+  </div>
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+
+    // Sample products data (replace with your actual products data)
+    var products = [];
+    for (var i = 0; i < sessionStorage.length; i++) {
+      var key = sessionStorage.key(i);
+      if (key.startsWith('product_')) {
+        var product = JSON.parse(sessionStorage.getItem(key));
+        products.push(product);
+      }
+    }
+    var button = Telegram.WebApp.MainButton;
+    if (products) {
+      button.setParams({
+        text: '{% trans "Davom etish" %}',
+        is_visible: true
+      }).onClick(function () {
+        window.location.href = '/tg/order/' + '?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}';
+      });
+    } else {
+      // If there are no items in the cart, hide the main button
+      button.setParams({
+        is_visible: false
+      });
+    }
+
+    // Function to generate HTML for each product
+    function generateProductHTML(product) {
+      return `
+
+      <div class="cart-item">
+        <img src="${product.image}" alt="${product.name}" width="100" height="100" class="product-image">
+        <button class="cart-button" onclick="decreaseCartCount(${product.id}, '${product.name.replace(/"/g, '\\"')}')" type="button" class="count-buttons">-</button>
+        <span id="prod-${product.id}">${product.count}</span>
+        <button class="cart-button" onclick="increaseCartCount(${product.id}, '${product.name.replace(/"/g, '\\"')}')" type="button" class="count-buttons">+</button>
+        <div class="product-details">
+            <div class="product-name">{% trans "Nomi: " %}${product.name}</div>
+            <div class="product-price">{% trans "Narxi: " %}${product.price} {% trans "so'm" %}</div>
+        </div>
+      </div>
+    `;
+    }
+
+    // Function to populate the product list
+    function populateProductList(products) {
+      var productList = document.getElementById('product-list');
+      if (!productList) {
+        console.error('Product list not found');
+        return;
+      }
+
+      productList.innerHTML = ''; // Clear existing content
+
+      products.forEach(function (product) {
+        var productHTML = generateProductHTML(product);
+        productList.insertAdjacentHTML('beforeend', productHTML);
+      });
+    }
+
+    // Call the function to populate the product list
+    populateProductList(products);
+
+    function cleanSession() {
+      sessionStorage.clear();
+      var queryParams = window.location.search.substr(1);
+      var url = '/tg/'; // Replace 0 with the appropriate URL pattern name
+      if (queryParams) {
+        url += '?' + queryParams + '&';
+      } else {
+        url += '?';
+      }
+      // url += 'categoryId=' + categoryId; // Append category id or any other parameter you want
+      window.location.href = url;
+    }
+
+    function updateTotalCost() {
+      var totalCost = 0;
+      for (var i = 0; i < sessionStorage.length; i++) {
+        var key = sessionStorage.key(i);
+        if (key.startsWith('product_')) {
+          var product = JSON.parse(sessionStorage.getItem(key));
+          totalCost += product.count * product.price;
+        }
+      }
+      document.getElementById('total-cost').innerText = totalCost.toLocaleString('en-US').replace(/,/g, ' ') + ' {% trans "soʻm" %}';
+    }
+
+    // Call the function to update total cost initially
+    updateTotalCost();
+
+    function updateProductDisplay(productId, productName) {
+      var productData = sessionStorage.getItem('product_' + productId);
+      if (!productData) {
+        // If product data is not found, set productCount to 0
+        var productCount = 0;
+      } else {
+        // Parse the JSON string to an object
+        var product = JSON.parse(productData);
+        // Extract the count property from the product object
+        var productCount = product.count;
+      }
+      var productDiv = document.getElementById('prod-' + productId);
+      if (productCount === 0) {
+        productDiv.innerHTML = `
+            <div onclick="addToCart(${productId}, '${productName.replace(/"/g, '\\"')}')">${productName}</div>
+        `;
+      } else {
+        productDiv.innerHTML = `
+            <span id="prod-${productId}">${productCount}</span>
+        `;
+      }
+    }
+
+    function increaseCartCount(productId, productName) {
+      var product = JSON.parse(sessionStorage.getItem('product_' + productId)) || {'count': 1};
+      product.count += 1;
+      sessionStorage.setItem('product_' + productId, JSON.stringify(product));
+      updateProductDisplay(productId, productName);
+      updateTotalCost();
+    }
+
+    // Function to update product count and total cost when decreasing count
+    function decreaseCartCount(productId, productName) {
+      var product = JSON.parse(sessionStorage.getItem('product_' + productId));
+      if (product.count > 1) {
+        product.count -= 1;
+        sessionStorage.setItem('product_' + productId, JSON.stringify(product));
+        updateProductDisplay(productId, productName);
+        updateTotalCost();
+      }
+    }
+  </script>
+{% endblock %}
