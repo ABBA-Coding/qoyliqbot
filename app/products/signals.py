@@ -23,7 +23,7 @@ def send_new_user_notification(sender, instance, created, **kwargs):
         message_data["text"] += f"\n\n{selected_products_message}"
         sync_send_message(**message_data)
         selected_products = SelectedProduct.objects.filter(order=instance) # noqa
-        products_text = "\n".join([f"{product.name}: {product.count}" async for product in selected_products])
+        products_text = "\n".join([f"{product.name}: {product.count}" for product in selected_products])
 
         success_text = str(_("<b>Yangi buyurtma</b>\n"
                              "Yetkazib berish: {delivery}\n"
