@@ -29,30 +29,13 @@
     </div>
 
 
-    <div class="form-group">
-      <div class="form-left">Filial:</div>
-      <div id="branch" class="form-right"></div>
-    </div>
-
-    <div class="form-group">
-      <div class="form-left">Masofa:</div>
-      <div id="minDistance" class="form-right">Noma'lum</div>
-    </div>
-
-
     <div class="all-cost">
-      <div class="cost">
-        <div class="left">{% trans 'Yetkazib berish:' %}</div>
-        <div class="right"> {% trans 'Yetkazib boʻlgach' %}</div>
-        <div class="right" id="deliveryCost"></div>
-      </div>
 
       {#      <div class="cost">#}
       {#        <div class="left">{% trans 'Narxi:' %}</div>#}
       {#        <div class="right"> {% trans 'soʻm' %}</div>#}
       {#        <div class="right" id="cost">0</div>#}
       {#      </div>#}
-      <div class="divider"></div>
 
       <div class="cost">
         <div class="left">{% trans 'Jami:' %}</div>
@@ -91,8 +74,8 @@
           // Add active class to the clicked button
           this.classList.add("active");
 
-          var selectedValue = this.value;
-          var deliveryTypeInput = document.getElementById("deliveryOption");
+          // var selectedValue = this.value;
+          // var deliveryTypeInput = document.getElementById("deliveryOption");
 
           // const deliveryCost = deliveryTypeInput.innerHTML === '' ? 0 : deliveryTypeInput.innerHTML
           // document.getElementById('deliveryCost').innerHTML = selectedValue === 'no' ? 0 : deliveryCost
@@ -100,25 +83,31 @@
           const addressSelect = document.getElementById('selectedAddress');
           const selectedAddress = addresses.find(address => address.id === parseInt(addressSelect.value));
           if (selectedAddress) {
-            const addressLatitude = selectedAddress.latitude;
-            const addressLongitude = selectedAddress.longitude;
-            let minDistance = Infinity;
-            let closestOutlet = null;
-            outletBranches.forEach(branch => {
-
-              const distance = calculateDistance(addressLatitude, addressLongitude, branch.latitude, branch.longitude);
-              if (distance < minDistance) {
-                minDistance = distance;
-                closestOutlet = branch;
-              }
-            });
-            validateMinDistance(minDistance, closestOutlet);
-            // Update minimum distance label
-            document.getElementById('minDistance').innerText = minDistance.toFixed(2) + " km";
-          } else {
-            document.getElementById('minDistance').innerText = "0 km";
-            document.getElementById('branch').innerText = "";
+            showButton();
           }
+          else {
+            disableButton();
+          }
+          // if (selectedAddress) {
+            // const addressLatitude = selectedAddress.latitude;
+            // const addressLongitude = selectedAddress.longitude;
+            // let minDistance = Infinity;
+            // let closestOutlet = null;
+            //outletBranches.forEach(branch => {
+            //  const distance = calculateDistance(addressLatitude, addressLongitude, branch.latitude, branch.longitude);
+            //  if (distance < minDistance) {
+            //    minDistance = distance;
+            //    closestOutlet = branch;
+            //  }
+            //});
+            // validateMinDistance(minDistance, closestOutlet);
+            // Update minimum distance label
+            // document.getElementById('minDistance').innerText = minDistance.toFixed(2) + " km";
+          // } else {
+            // document.getElementById('minDistance').innerText = "0 km";
+            // document.getElementById('branch').innerText = "";
+          // }
+
 
         });
       });
@@ -135,7 +124,7 @@
       const formData = {
         delivery: document.getElementById('deliveryOption').value,
         address: document.getElementById('selectedAddress').innerText,
-        filial: parseInt(document.getElementById('branch').getAttribute('data')),
+        // filial: parseInt(document.getElementById('branch').getAttribute('data')),
         distance: document.getElementById('minDistance').value,
         // cost: document.getElementById('cost').innerHTML,
         // delivery_cost: document.getElementById('deliveryCost').innerHTML,
