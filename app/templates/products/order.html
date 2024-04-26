@@ -11,12 +11,7 @@
     <div class="center-column"><h2>{% trans "Buyurtma" %}</h2></div>
   </div>
   <div style="padding: 10px">
-    <div class="form-group">
-      {#      <button type="button" class="cash-button active" value="payme">Payme</button>#}
-      <button type="button" class="cash-button active" value="click">Click</button>
-      <input type="hidden" id="cashType" name="cashType" value="click">
-      <!-- Hidden input to store the selected value -->
-    </div>
+
 
     <div class="form-group">
       <button type="button" class="delivery-button active" value="yes">{% trans "Yetkazib berish" %}</button>
@@ -84,9 +79,6 @@
           // Add active class to the clicked button
           this.classList.add("active");
 
-          var selectedValue = this.value;
-          var cashTypeInput = document.getElementById("cashType");
-          cashTypeInput.value = selectedValue;
         });
       });
       deliveryButtons.forEach(function (button) {
@@ -141,7 +133,6 @@
 
     function createOrder() {
       const formData = {
-        cash_type: document.getElementById('cashType').value,
         delivery: document.getElementById('deliveryOption').value,
         address: document.getElementById('selectedAddress').innerText,
         filial: parseInt(document.getElementById('branch').getAttribute('data')),
