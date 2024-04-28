@@ -14,16 +14,9 @@ def send_new_user_notification(sender, instance, created, **kwargs):
     if created:
         sync_send_message = async_to_sync(bot.send_message)
         # Prepare message data
-        message_data = {
-            "chat_id": instance.user_id,
-            "text": str(_("Xaridingiz hodimlarga yuborildi"))
-        }
-        selected_products_message = "\n".join(
-            [f"{product.name}: {product.count}" for product in instance.selected_products.all()])
-        message_data["text"] += f"\n\n{selected_products_message}"
-        sync_send_message(**message_data)
         selected_products = SelectedProduct.objects.filter(order=instance) # noqa
         products_text = "\n".join([f"{product.name}: {product.count}" for product in selected_products])
+        print(selected_products)
 
         success_text = str(_("<b>Yangi buyurtma</b>\n"
                              "Jami: {all_cost}\n"
