@@ -1,14 +1,21 @@
-# store/views.py
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
 from rest_framework import generics
 from .models import Category, Product, Order
 from django.utils.translation import activate
-from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from .serializers import OrderSerializer
+
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from asgiref.sync import async_to_sync
+
+from app.products.models import SelectedProduct
+from bot.misc import bot
+from bot.utils.kbs import approve
+from rest_framework import status
+from rest_framework.response import Response
 
 from ..address.models import Address
 from ..users.models import TelegramUser
@@ -103,10 +110,32 @@ class CreateOrderAPIView(generics.CreateAPIView):
     serializer_class = OrderSerializer
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        print(request.POST)
+
+        # Call send_new_user_notification function after order creation
+        instance = serializer.instance
+        send_new_user_notification(instance)
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+def send_new_user_notification(instance):
+    sync_send_message = async_to_sync(bot.send_message)
+    # Prepare message data
+    selected_products = SelectedProduct.objects.filter(order=instance)
+    products_text = "\n".join([f"{product.name}: {product.count}" for product in selected_products])
+
+    success_text = str(_("<b>Yangi buyurtma</b>\n"
+                         "Jami: {all_cost}\n"
+                         "Foydalanuvchi: {user}\n"
+                         "Mahsulotlar:\n{products}\n"
+                         )).format(
+        all_cost=instance.all_cost,
+        user=instance.user.phone if instance.user else None,
+        products=products_text,
+    )
+    sync_send_message(instance.user_id, success_text)
+    sync_send_message(settings.TELEGRAM_GROUP_ID, success_text, reply_markup=approve(instance.pk))
