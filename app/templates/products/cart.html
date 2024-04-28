@@ -37,7 +37,7 @@
         text: '{% trans "Davom etish" %}',
         is_visible: true
       }).onClick(function () {
-        window.location.href = '/tg/order/' + '?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}';
+        createOrder();
       });
     } else {
       // If there are no items in the cart, hide the main button
@@ -150,6 +150,44 @@
         updateProductDisplay(productId, productName);
         updateTotalCost();
       }
+    }
+    function createOrder() {
+      var user = Telegram.WebApp.initDataUnsafe.user;
+      const formData = {
+        all_cost: document.getElementById('totalAmount').innerHTML,
+        user: parseInt(user.id),
+      };
+      const selectedProducts = [];
+      for (var i = 0; i < sessionStorage.length; i++) {
+        var key = sessionStorage.key(i);
+        if (key.startsWith('product_')) {
+          var product = JSON.parse(sessionStorage.getItem(key));
+          selectedProducts.push({name: product.name, count: product.count});
+        }
+      }
+      formData.selected_products = selectedProducts;
+      fetch('/create-order/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify(formData)
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            // Order created successfully, handle response as needed
+            Telegram.WebApp.close()
+          } else {
+            console.error('Failed to create order');
+          }
+        })
+        .catch(error => {
+          console.error('Error creating order:', error);
+        });
+
+
     }
   </script>
 {% endblock %}
