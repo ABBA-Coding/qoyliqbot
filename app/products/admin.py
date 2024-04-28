@@ -22,8 +22,8 @@ class ProductAdmin(TabbedTranslationAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['filial', 'address', 'user_phone', 'all_cost', 'delivery', "status"]
-    list_display_links = ['filial', 'address', 'user_phone']
+    list_display = ['user_phone', 'all_cost', "status"]
+    list_display_links = ['user_phone']
     inlines = [SelectedProductInline]
 
     def user_phone(self, obj):

@@ -26,26 +26,12 @@ def send_new_user_notification(sender, instance, created, **kwargs):
         products_text = "\n".join([f"{product.name}: {product.count}" for product in selected_products])
 
         success_text = str(_("<b>Yangi buyurtma</b>\n"
-                             "Yetkazib berish: {delivery}\n"
-                             "Manzil: {address}\n"
-                             "Filial: {filial}\n"
-                             "Masofa: {distance}\n"
-                             # "Narx: {cost}\n"
-                             # "Yetkazib berish narxi: {delivery_cost}\n"
                              "Jami: {all_cost}\n"
                              "Foydalanuvchi: {user}\n"
                              "Mahsulotlar:\n{products}\n"
-                             "Check ID: {charge_id}\n"
                              )).format(
-            delivery=str(_("Xa")) if instance.delivery == 'yes' else str(_("Yo'q")),
-            address=instance.address,
-            filial=instance.filial.name,  # Assuming Branch model has a 'name' field
-            distance=instance.distance,
-            # cost=order.cost,
-            # delivery_cost=order.delivery_cost,
             all_cost=instance.all_cost,
-            user=instance.user.phone if instance.user else None,  # Assuming TelegramUser has a 'username' field
-            charge_id=instance.charge_id,
+            user=instance.user.phone if instance.user else None,
             products=products_text,  # Add the list of selected products to the message
         )
         sync_send_message(instance.user_id, success_text)
