@@ -69,6 +69,6 @@ class Order(models.Model):
         CLICK = ("click", _("Click"))
         PAYME = ("payme", _("Payme"))
 
-    all_cost = models.CharField(max_length=10)
+    all_cost = models.CharField(max_length=255)
     user = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS.choices, default=STATUS.CREATED)
