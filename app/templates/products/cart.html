@@ -36,7 +36,7 @@
     function createOrder() {
       var user = Telegram.WebApp.initDataUnsafe.user;
       const formData = {
-        all_cost: document.getElementById('totalAmount').innerHTML,
+        all_cost: document.getElementById('total-cost').innerHTML,
         user: parseInt(user.id),
       };
       const selectedProducts = [];
