@@ -20,6 +20,7 @@
     function goBack() {
       window.history.back();
     }
+    var button = window.Telegram.WebApp.MainButton;
 
 
     // Sample products data (replace with your actual products data)
@@ -32,7 +33,45 @@
       }
     }
     console.log(products);
-    var button = Telegram.WebApp.MainButton;
+    function createOrder() {
+      var user = Telegram.WebApp.initDataUnsafe.user;
+      const formData = {
+        all_cost: document.getElementById('totalAmount').innerHTML,
+        user: parseInt(user.id),
+      };
+      const selectedProducts = [];
+      for (var i = 0; i < sessionStorage.length; i++) {
+        var key = sessionStorage.key(i);
+        if (key.startsWith('product_')) {
+          var product = JSON.parse(sessionStorage.getItem(key));
+          selectedProducts.push({name: product.name, count: product.count});
+        }
+      }
+      formData.selected_products = selectedProducts;
+      fetch('/create-order/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify(formData)
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            // Order created successfully, handle response as needed
+            Telegram.WebApp.close()
+          } else {
+            console.error('Failed to create order');
+          }
+        })
+        .catch(error => {
+          console.error('Error creating order:', error);
+        });
+
+
+    }
+
     if (products) {
       button.setParams({
         text: '{% trans "Davom etish" %}',
@@ -152,43 +191,6 @@
         updateTotalCost();
       }
     }
-    function createOrder() {
-      var user = Telegram.WebApp.initDataUnsafe.user;
-      const formData = {
-        all_cost: document.getElementById('totalAmount').innerHTML,
-        user: parseInt(user.id),
-      };
-      const selectedProducts = [];
-      for (var i = 0; i < sessionStorage.length; i++) {
-        var key = sessionStorage.key(i);
-        if (key.startsWith('product_')) {
-          var product = JSON.parse(sessionStorage.getItem(key));
-          selectedProducts.push({name: product.name, count: product.count});
-        }
-      }
-      formData.selected_products = selectedProducts;
-      fetch('/create-order/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
 
-          body: JSON.stringify(formData)
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            // Order created successfully, handle response as needed
-            Telegram.WebApp.close()
-          } else {
-            console.error('Failed to create order');
-          }
-        })
-        .catch(error => {
-          console.error('Error creating order:', error);
-        });
-
-
-    }
   </script>
 {% endblock %}
